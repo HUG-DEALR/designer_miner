@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://cm8o7qb14s50h"]
+
+[ext_resource type="Script" path="res://Scripts/Part_Scripts/Rigid_Parts/Simple_Bar.gd" id="1_a6bie"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pn0n4"]
+size = Vector2(32, 64)
+
+[sub_resource type="Gradient" id="Gradient_gs75i"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_co4t3"]
+gradient = SubResource("Gradient_gs75i")
+fill_from = Vector2(1, 1)
+
+[node name="Simple_Bar" type="RigidBody2D"]
+collision_layer = 19
+collision_mask = 130
+gravity_scale = 0.0
+inertia = 427.0
+script = ExtResource("1_a6bie")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_pn0n4")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 1)
+texture = SubResource("GradientTexture2D_co4t3")

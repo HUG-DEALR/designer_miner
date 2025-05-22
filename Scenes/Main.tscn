@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2bmdr2c0lspx"]
+
+[ext_resource type="Script" path="res://Scripts/Main.gd" id="1_kt03g"]
+[ext_resource type="PackedScene" uid="uid://bf1l3v72wahjm" path="res://Scenes/Parts/Moving_Parts/linear_actuator.tscn" id="2_6rl8l"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fox5y"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_kt03g")
+
+[node name="Linear_Actuator" parent="." instance=ExtResource("2_6rl8l")]
+position = Vector2(535, 175)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(546.91, 149.889)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_fox5y")
+disabled = true
+
+[node name="GrooveJoint2D" type="GrooveJoint2D" parent="StaticBody2D"]
+position = Vector2(50, -50)
+node_a = NodePath("..")
+node_b = NodePath("../../RigidBody2D")
+length = 400.0
+initial_offset = 100.0
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2(596.975, 199.948)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("CircleShape2D_fox5y")
+disabled = true

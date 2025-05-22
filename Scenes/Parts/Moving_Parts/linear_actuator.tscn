@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3 uid="uid://bf1l3v72wahjm"]
+
+[ext_resource type="Texture2D" uid="uid://cva1xdip6se40" path="res://Sprites/Parts/Moving_Parts/Linear_Actuator_1_Pin_End.png" id="1_6a7w3"]
+[ext_resource type="Script" path="res://Scripts/Part_Scripts/Moving_Parts/Linear_Actuator.gd" id="1_7ookr"]
+[ext_resource type="Texture2D" uid="uid://cdt4qfntbbuko" path="res://Sprites/Parts/Moving_Parts/Linear_Actuator_1_Base.png" id="1_dnvic"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1grf6"]
+radius = 6.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_18mkv"]
+size = Vector2(4, 70)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h3v4a"]
+radius = 12.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_clpos"]
+size = Vector2(68, 9)
+
+[node name="Linear_Actuator" type="RigidBody2D"]
+collision_layer = 25
+collision_mask = 184
+gravity_scale = 0.0
+script = ExtResource("1_7ookr")
+
+[node name="GrooveJoint2D1" type="GrooveJoint2D" parent="."]
+rotation = 4.71239
+node_a = NodePath("..")
+node_b = NodePath("../Pin")
+length = 87.0
+initial_offset = 1.0
+
+[node name="GrooveJoint2D2" type="GrooveJoint2D" parent="."]
+position = Vector2(87, 0)
+rotation = 4.71239
+node_a = NodePath("..")
+node_b = NodePath("../Pin")
+length = 87.0
+initial_offset = 1.0
+
+[node name="Pin" type="RigidBody2D" parent="."]
+rotation = 1.5708
+collision_layer = 25
+collision_mask = 184
+gravity_scale = 0.0
+
+[node name="Pin" type="Sprite2D" parent="Pin"]
+texture_filter = 1
+position = Vector2(0, -58)
+texture = ExtResource("1_6a7w3")
+
+[node name="Pin_Circle" type="CollisionShape2D" parent="Pin"]
+position = Vector2(0, -87)
+shape = SubResource("CircleShape2D_1grf6")
+
+[node name="Pin_Rect" type="CollisionShape2D" parent="Pin"]
+position = Vector2(0, -47)
+shape = SubResource("RectangleShape2D_18mkv")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(58, 0)
+rotation = 1.5708
+texture = ExtResource("1_dnvic")
+
+[node name="Base_Circle" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_h3v4a")
+
+[node name="Base_Rect" type="CollisionShape2D" parent="."]
+position = Vector2(45, 0)
+shape = SubResource("RectangleShape2D_clpos")
