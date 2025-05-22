@@ -7,6 +7,10 @@ extends RigidBody2D
 @onready var groove_1: GrooveJoint2D = $GrooveJoint2D1
 @onready var groove_2: GrooveJoint2D = $GrooveJoint2D2
 
+func _ready() -> void:
+	groove_1.bias = 1.0
+	groove_2.bias = 1.0
+
 func get_offset(join_number: int) -> Vector2:
 	match  join_number:
 		1:

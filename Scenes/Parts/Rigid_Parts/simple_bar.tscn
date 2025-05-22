@@ -1,26 +1,34 @@
 [gd_scene load_steps=5 format=3 uid="uid://cm8o7qb14s50h"]
 
 [ext_resource type="Script" path="res://Scripts/Part_Scripts/Rigid_Parts/Simple_Bar.gd" id="1_a6bie"]
+[ext_resource type="Texture2D" uid="uid://stid1skvf4gx" path="res://Sprites/Parts/Rigid_Parts/Simple_Bar.png" id="2_s88na"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pn0n4"]
-size = Vector2(32, 64)
+size = Vector2(14, 112)
 
-[sub_resource type="Gradient" id="Gradient_gs75i"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_co4t3"]
-gradient = SubResource("Gradient_gs75i")
-fill_from = Vector2(1, 1)
+[sub_resource type="CircleShape2D" id="CircleShape2D_m32iu"]
+radius = 7.0
 
 [node name="Simple_Bar" type="RigidBody2D"]
 collision_layer = 19
 collision_mask = 130
 gravity_scale = 0.0
-inertia = 427.0
 script = ExtResource("1_a6bie")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_pn0n4")
 
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, 56)
+shape = SubResource("CircleShape2D_m32iu")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(0, -56)
+shape = SubResource("CircleShape2D_m32iu")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.5, 1)
-texture = SubResource("GradientTexture2D_co4t3")
+texture_filter = 1
+texture = ExtResource("2_s88na")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

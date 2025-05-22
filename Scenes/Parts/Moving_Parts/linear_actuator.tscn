@@ -16,7 +16,7 @@ radius = 12.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_clpos"]
 size = Vector2(68, 9)
 
-[node name="Linear_Actuator" type="RigidBody2D"]
+[node name="Linear_Actuator" type="RigidBody2D" groups=["multibody_part"]]
 collision_layer = 25
 collision_mask = 184
 gravity_scale = 0.0

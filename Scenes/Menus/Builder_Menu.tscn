@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://7ayxeo2kacem"]
+[gd_scene load_steps=5 format=3 uid="uid://7ayxeo2kacem"]
 
 [ext_resource type="Script" path="res://Scripts/Menus/Builder_Menu.gd" id="1_71iis"]
 
@@ -20,6 +20,9 @@ border_width_top = 8
 border_width_right = 8
 border_width_bottom = 8
 border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrsfb"]
+bg_color = Color(1, 1, 1, 0.0980392)
 
 [node name="BuilderMenu" type="Node2D"]
 script = ExtResource("1_71iis")
@@ -79,4 +82,90 @@ theme_override_constants/h_separation = 15
 theme_override_constants/v_separation = 15
 columns = 2
 
-[node name="Mouse_Follower" type="Node2D" parent="."]
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+current_tab = 0
+
+[node name="Join" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+metadata/_tab_index = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer/Join"]
+layout_mode = 2
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="node_a" type="Label" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer/Join/HBoxContainer"]
+custom_minimum_size = Vector2(75, 25)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="node_b" type="Label" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer/Join/HBoxContainer"]
+custom_minimum_size = Vector2(75, 25)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer/Join"]
+custom_minimum_size = Vector2(120, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Create Joint"
+
+[node name="Edit" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 5
+metadata/_tab_index = 1
+
+[node name="label" type="Label" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer/Edit"]
+custom_minimum_size = Vector2(75, 25)
+layout_mode = 2
+text = "WIP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mouse_Follower" type="Node2D" parent="CanvasLayer"]
+
+[node name="Control2" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 2
+mouse_filter = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control2"]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control2/ScrollContainer"]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rrsfb")
+
+[node name="Build_Plate" type="Node2D" parent="CanvasLayer/Control2/ScrollContainer/PanelContainer"]
+
+[connection signal="mouse_entered" from="CanvasLayer/Control2/ScrollContainer/PanelContainer" to="." method="_on_build_plate_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Control2/ScrollContainer/PanelContainer" to="." method="_on_build_plate_mouse_exited"]
