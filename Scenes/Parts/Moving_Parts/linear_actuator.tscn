@@ -45,7 +45,7 @@ gravity_scale = 0.0
 
 [node name="Pin" type="Sprite2D" parent="Pin"]
 texture_filter = 1
-position = Vector2(0, -58)
+position = Vector2(0, -53)
 texture = ExtResource("1_6a7w3")
 
 [node name="Pin_Circle" type="CollisionShape2D" parent="Pin"]
@@ -58,7 +58,7 @@ shape = SubResource("RectangleShape2D_18mkv")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(58, 0)
+position = Vector2(34, 0)
 rotation = 1.5708
 texture = ExtResource("1_dnvic")
 

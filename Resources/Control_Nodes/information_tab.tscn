@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=3 uid="uid://mudqkjjscrqd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6pyxx"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.201527, 0.201527, 0.201526, 1)
+
+[node name="Information_Tab" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+mouse_filter = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6pyxx")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Item1" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Name" type="Label" parent="PanelContainer/VBoxContainer/Item1"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Property Name 1"
+autowrap_mode = 2
+
+[node name="Description" type="Label" parent="PanelContainer/VBoxContainer/Item1"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Property Description 1"
+autowrap_mode = 2
