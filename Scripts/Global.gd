@@ -26,6 +26,13 @@ func create_groove_joint(moving_node: PhysicsBody2D, parent_node: PhysicsBody2D,
 	new_joint.bias = bias
 	# Untested but works in theory
 
+func get_all_descendants(node: Node) -> Array:
+	var descendants: Array = []
+	for child in node.get_children():
+		descendants.append(child)
+		descendants += get_all_descendants(child)
+	return descendants
+
 func convert_to_simple_force(force_array: Array) -> Vector2:
 	var equiv_simple_force: Vector2 = Vector2.ZERO
 	for i in range(force_array.size()):

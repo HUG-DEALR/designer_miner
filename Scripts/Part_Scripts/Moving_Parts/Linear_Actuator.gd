@@ -28,3 +28,10 @@ func get_joint_physics_body(joint_number: int) -> PhysicsBody2D:
 			return pin_rigid_body
 		_:
 			return base_rigid_body
+
+func set_freeze(state: bool, pass_to_chilldren: bool = true) -> void:
+	freeze = state
+	if pass_to_chilldren:
+		for child in Global.get_all_descendants(self):
+			if child is RigidBody2D:
+				child.freeze = state

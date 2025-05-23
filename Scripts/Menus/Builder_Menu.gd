@@ -22,6 +22,7 @@ var item_frames: Dictionary = {}
 
 func _ready() -> void:
 	init_items()
+	build_plate_node.position = build_panel.size/2
 
 func _process(_delta: float) -> void:
 	if mouse_carrying_a_part:
@@ -31,20 +32,34 @@ func _process(_delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if mouse_carrying_a_part:
-			if mouse_over_buildplate:
-				part_being_carried.reparent(build_plate_node)
-				part_being_carried = null
-				mouse_carrying_a_part = false
-			else:
-				for node in mouse_follower.get_children():
-					node.queue_free()
-				part_being_carried = null
-				mouse_carrying_a_part = false
+			match event.button_index:
+				MOUSE_BUTTON_LEFT:
+					if mouse_over_buildplate:
+						part_being_carried.reparent(build_plate_node)
+						mouse_carrying_a_part = false
+						if build_plate_node.get_child_count() == 1: #Center first part
+							part_being_carried.position = Vector2.ZERO
+						part_being_carried = null
+					else:
+						for node in mouse_follower.get_children():
+							node.queue_free()
+						part_being_carried = null
+						mouse_carrying_a_part = false
+					mouse_follower.rotation = 0.0
+				MOUSE_BUTTON_WHEEL_UP:
+					mouse_follower.rotate(deg_to_rad(15))
+				MOUSE_BUTTON_WHEEL_DOWN:
+					mouse_follower.rotate(deg_to_rad(-15))
 
 func set_carrying_state(state: bool) -> void:
 	mouse_carrying_a_part = state
 	if mouse_follower.get_child(-1):
 		part_being_carried = mouse_follower.get_child(-1)
+		
+		if part_being_carried.is_in_group("multibody_part"):
+			part_being_carried.set_freeze(true)
+		else:
+			part_being_carried.freeze = true
 
 func get_carrying_state() -> bool:
 	return mouse_carrying_a_part
