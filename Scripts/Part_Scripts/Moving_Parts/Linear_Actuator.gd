@@ -7,9 +7,21 @@ extends RigidBody2D
 @onready var groove_1: GrooveJoint2D = $GrooveJoint2D1
 @onready var groove_2: GrooveJoint2D = $GrooveJoint2D2
 
+var base_touching_mouse: bool = false
+var pin_touching_mouse: bool = false
+var selected: bool = false
+
 func _ready() -> void:
 	groove_1.bias = 1.0
 	groove_2.bias = 1.0
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if base_touching_mouse or pin_touching_mouse:
+			if selected:
+				selected = false
+			else:
+				selected = true
 
 func get_offset(join_number: int) -> Vector2:
 	match  join_number:
@@ -35,3 +47,15 @@ func set_freeze(state: bool, pass_to_chilldren: bool = true) -> void:
 		for child in Global.get_all_descendants(self):
 			if child is RigidBody2D:
 				child.freeze = state
+
+func _on_mouse_entered_base() -> void:
+	base_touching_mouse = true
+
+func _on_mouse_exited_base() -> void:
+	base_touching_mouse = false
+
+func _on_mouse_entered_pin() -> void:
+	pin_touching_mouse = true
+
+func _on_mouse_exited_pin() -> void:
+	pin_touching_mouse = false

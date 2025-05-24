@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" path="res://Scripts/Menus/Builder_Menu.gd" id="1_71iis"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrsfb"]
+bg_color = Color(1, 1, 1, 0.0980392)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b136e"]
 content_margin_left = 15.0
 content_margin_top = 15.0
@@ -21,9 +24,6 @@ border_width_right = 8
 border_width_bottom = 8
 border_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrsfb"]
-bg_color = Color(1, 1, 1, 0.0980392)
-
 [node name="BuilderMenu" type="Node2D"]
 script = ExtResource("1_71iis")
 
@@ -41,92 +41,192 @@ grow_vertical = 2
 focus_mode = 2
 mouse_filter = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control"]
-custom_minimum_size = Vector2(100, 100)
+[node name="HBoxContainer" type="HSplitContainer" parent="CanvasLayer/Control"]
+custom_minimum_size = Vector2(800, 600)
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -245.0
-grow_horizontal = 0
+grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 15
+theme_override_constants/minimum_grab_thickness = 15
+split_offset = 10000
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/HBoxContainer"]
+custom_minimum_size = Vector2(600, 600)
+layout_mode = 2
+follow_focus = true
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HBoxContainer/ScrollContainer"]
+custom_minimum_size = Vector2(2500, 2500)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rrsfb")
+
+[node name="Build_Plate" type="Node2D" parent="CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer"]
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_b136e")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_iljtt")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/PanelContainer"]
-custom_minimum_size = Vector2(0, 400)
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(260, 350)
 layout_mode = 2
 follow_focus = true
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/PanelContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/ScrollContainer"]
 layout_mode = 2
 theme_override_constants/margin_right = 10
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/PanelContainer/ScrollContainer/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/ScrollContainer/MarginContainer"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/h_separation = 15
-theme_override_constants/v_separation = 15
+theme_override_constants/h_separation = 25
+theme_override_constants/v_separation = 25
 columns = 2
 
-[node name="TabContainer" type="TabContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer"]
+[node name="TabContainer" type="TabContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 current_tab = 0
 
-[node name="Join" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer"]
+[node name="Join" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer"]
 layout_mode = 2
-theme_override_constants/separation = 5
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 metadata/_tab_index = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer/Join"]
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 5
 alignment = 1
 
-[node name="node_a" type="Label" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer/Join/HBoxContainer"]
-custom_minimum_size = Vector2(75, 25)
+[node name="Pin" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer"]
+custom_minimum_size = Vector2(100, 25)
 layout_mode = 2
-horizontal_alignment = 1
-vertical_alignment = 1
+text = "Rotary Joint"
 
-[node name="node_b" type="Label" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer/Join/HBoxContainer"]
-custom_minimum_size = Vector2(75, 25)
+[node name="Groove" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer"]
+custom_minimum_size = Vector2(100, 25)
 layout_mode = 2
-horizontal_alignment = 1
-vertical_alignment = 1
+disabled = true
+text = "Slider Joint"
 
-[node name="Button" type="Button" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer/Join"]
-custom_minimum_size = Vector2(120, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Create Joint"
-
-[node name="Edit" type="VBoxContainer" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer"]
-visible = false
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 5
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer2"]
+custom_minimum_size = Vector2(65, 25)
+layout_mode = 2
+text = "Point 1:"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer2"]
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 2
+placeholder_text = "Select with Left Click"
+alignment = 2
+editable = false
+expand_to_text_length = true
+context_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer3"]
+custom_minimum_size = Vector2(65, 25)
+layout_mode = 2
+text = "Point 2:"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer3"]
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 2
+placeholder_text = "Select with Right Click"
+alignment = 2
+editable = false
+expand_to_text_length = true
+context_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+
+[node name="Edit" type="MarginContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 metadata/_tab_index = 1
 
-[node name="label" type="Label" parent="CanvasLayer/Control/PanelContainer/VBoxContainer/TabContainer/Edit"]
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Edit"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="label" type="Label" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Edit/VBox"]
 custom_minimum_size = Vector2(75, 25)
 layout_mode = 2
 text = "WIP"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+columns = 3
+
+[node name="Recenter" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Recenter"
+
+[node name="Clear" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+text = "Clear"
+
+[node name="Exit" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+disabled = true
+text = "Exit"
+
+[node name="Save" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+disabled = true
+text = "Save"
+
+[node name="Load" type="Button" parent="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+disabled = true
+text = "Load"
 
 [node name="Mouse_Follower" type="Node2D" parent="CanvasLayer"]
 
@@ -144,28 +244,7 @@ size_flags_vertical = 4
 focus_mode = 2
 mouse_filter = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control2"]
-custom_minimum_size = Vector2(500, 500)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -50.0
-offset_right = 50.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
-follow_focus = true
-
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control2/ScrollContainer"]
-custom_minimum_size = Vector2(500, 500)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_rrsfb")
-
-[node name="Build_Plate" type="Node2D" parent="CanvasLayer/Control2/ScrollContainer/PanelContainer"]
-
-[connection signal="mouse_entered" from="CanvasLayer/Control2/ScrollContainer/PanelContainer" to="." method="_on_build_plate_mouse_entered"]
-[connection signal="mouse_exited" from="CanvasLayer/Control2/ScrollContainer/PanelContainer" to="." method="_on_build_plate_mouse_exited"]
+[connection signal="mouse_entered" from="CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer" to="." method="_on_build_plate_mouse_entered"]
+[connection signal="mouse_exited" from="CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer" to="." method="_on_build_plate_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer/Recenter" to="." method="_on_recenter_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer/Clear" to="." method="_on_clear_pressed"]

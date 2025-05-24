@@ -1,9 +1,10 @@
 extends Node2D
 
-@onready var item_grid: GridContainer = $CanvasLayer/Control/PanelContainer/VBoxContainer/PanelContainer/ScrollContainer/MarginContainer/GridContainer
+@onready var item_grid: GridContainer = $CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/PanelContainer/ScrollContainer/MarginContainer/GridContainer
 @onready var mouse_follower: Node2D = $CanvasLayer/Mouse_Follower
-@onready var build_plate_node: Node2D = $CanvasLayer/Control2/ScrollContainer/PanelContainer/Build_Plate
-@onready var build_panel: PanelContainer = $CanvasLayer/Control2/ScrollContainer/PanelContainer
+@onready var build_plate_node: Node2D = $CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer/Build_Plate
+@onready var build_panel: PanelContainer = $CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer
+@onready var build_scroll_container: ScrollContainer = $CanvasLayer/Control/HBoxContainer/ScrollContainer
 
 const item_frame_path: String = "res://Scenes/Menus/item_frame.tscn"
 const parts_dict: Dictionary = {
@@ -23,6 +24,8 @@ var item_frames: Dictionary = {}
 func _ready() -> void:
 	init_items()
 	build_plate_node.position = build_panel.size/2
+	await get_tree().process_frame
+	center_build_plate()
 
 func _process(_delta: float) -> void:
 	if mouse_carrying_a_part:
@@ -75,8 +78,22 @@ func init_items() -> void:
 		item_frames[key] = new_item_frame
 		new_item_frame.init_item_frame(parts_thumbnail_dict[key], parts_dict[key], key, mouse_follower, self)
 
+func center_build_plate() -> void:
+	build_scroll_container.scroll_horizontal = max(0,(build_panel.size.x - build_scroll_container.size.x)/2.0)
+	build_scroll_container.scroll_vertical = max(0,(build_panel.size.y - build_scroll_container.size.y)/2.0)
+
+func clear_build_plate() -> void:
+	for node in build_plate_node.get_children():
+		node.queue_free()
+
 func _on_build_plate_mouse_entered() -> void:
 	mouse_over_buildplate = true
 
 func _on_build_plate_mouse_exited() -> void:
 	mouse_over_buildplate = false
+
+func _on_recenter_pressed() -> void:
+	center_build_plate()
+
+func _on_clear_pressed() -> void:
+	clear_build_plate()

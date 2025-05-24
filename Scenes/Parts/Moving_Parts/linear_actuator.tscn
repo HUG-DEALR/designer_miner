@@ -68,3 +68,8 @@ shape = SubResource("CircleShape2D_h3v4a")
 [node name="Base_Rect" type="CollisionShape2D" parent="."]
 position = Vector2(45, 0)
 shape = SubResource("RectangleShape2D_clpos")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered_base"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited_base"]
+[connection signal="mouse_entered" from="Pin" to="." method="_on_mouse_entered_pin"]
+[connection signal="mouse_exited" from="Pin" to="." method="_on_mouse_exited_pin"]
