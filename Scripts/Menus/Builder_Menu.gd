@@ -5,6 +5,8 @@ extends Node2D
 @onready var build_plate_node: Node2D = $CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer/Build_Plate
 @onready var build_panel: PanelContainer = $CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer
 @onready var build_scroll_container: ScrollContainer = $CanvasLayer/Control/HBoxContainer/ScrollContainer
+@onready var highlight: Sprite2D = $CanvasLayer/Highlighter
+@onready var mouse_ray: RayCast2D = $CanvasLayer/Mouse_Ray
 
 const item_frame_path: String = "res://Scenes/Menus/item_frame.tscn"
 const parts_dict: Dictionary = {
@@ -18,8 +20,9 @@ const parts_thumbnail_dict: Dictionary = { # Keys must match parts_dict
 
 var mouse_carrying_a_part: bool = false
 var mouse_over_buildplate: bool = false
-var part_being_carried: Node2D
+var part_being_carried: Node2D = null
 var item_frames: Dictionary = {}
+var selected_body: PhysicsBody2D = null
 
 func _ready() -> void:
 	init_items()
@@ -53,6 +56,24 @@ func _input(event: InputEvent) -> void:
 					mouse_follower.rotate(deg_to_rad(15))
 				MOUSE_BUTTON_WHEEL_DOWN:
 					mouse_follower.rotate(deg_to_rad(-15))
+		else:
+			mouse_ray.global_position = get_viewport().get_mouse_position()
+			mouse_ray.force_raycast_update()
+			if mouse_ray.is_colliding():
+				selected_body = mouse_ray.get_collider()
+				var selected_sprite: Sprite2D = selected_body.set_select_state(true)
+				highlight.texture = selected_sprite.texture
+				highlight.global_transform = selected_sprite.global_transform
+				match event.button_index:
+					MOUSE_BUTTON_LEFT:
+						pass
+					MOUSE_BUTTON_RIGHT:
+						pass
+			else:
+				if selected_body:
+					selected_body.set_select_state(false)
+					selected_body = null
+					highlight.texture = null
 
 func set_carrying_state(state: bool) -> void:
 	mouse_carrying_a_part = state

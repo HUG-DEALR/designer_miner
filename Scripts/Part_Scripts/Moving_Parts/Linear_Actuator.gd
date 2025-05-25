@@ -6,6 +6,8 @@ extends RigidBody2D
 @onready var pin_rigid_body: RigidBody2D = $Pin
 @onready var groove_1: GrooveJoint2D = $GrooveJoint2D1
 @onready var groove_2: GrooveJoint2D = $GrooveJoint2D2
+@onready var base_sprite: Sprite2D = $Base
+@onready var pin_sprite: Sprite2D = $Pin/Pin
 
 var base_touching_mouse: bool = false
 var pin_touching_mouse: bool = false
@@ -15,13 +17,12 @@ func _ready() -> void:
 	groove_1.bias = 1.0
 	groove_2.bias = 1.0
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		if base_touching_mouse or pin_touching_mouse:
-			if selected:
-				selected = false
-			else:
-				selected = true
+func set_select_state(state: bool) -> Sprite2D:
+	selected = state
+	if pin_touching_mouse:
+		return pin_sprite
+	else:
+		return base_sprite
 
 func get_offset(join_number: int) -> Vector2:
 	match  join_number:
@@ -47,15 +48,3 @@ func set_freeze(state: bool, pass_to_chilldren: bool = true) -> void:
 		for child in Global.get_all_descendants(self):
 			if child is RigidBody2D:
 				child.freeze = state
-
-func _on_mouse_entered_base() -> void:
-	base_touching_mouse = true
-
-func _on_mouse_exited_base() -> void:
-	base_touching_mouse = false
-
-func _on_mouse_entered_pin() -> void:
-	pin_touching_mouse = true
-
-func _on_mouse_exited_pin() -> void:
-	pin_touching_mouse = false

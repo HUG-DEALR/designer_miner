@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://btip73a7xsi01"]
+
+[node name="JointIndicator" type="Node2D"]
+
+[node name="Line2D2" type="Line2D" parent="."]
+points = PackedVector2Array(7, 0, 5, 5, 0, 7, -5, 5, -7, 0, -5, -5, 0, -7, 5, -5)
+closed = true
+width = 6.0
+default_color = Color(0, 0, 0, 1)
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(7, 0, 5, 5, 0, 7, -5, 5, -7, 0, -5, -5, 0, -7, 5, -5)
+closed = true
+width = 3.0
+default_color = Color(1, 0, 0, 1)

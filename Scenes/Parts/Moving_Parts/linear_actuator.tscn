@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bf1l3v72wahjm"]
+[gd_scene load_steps=9 format=3 uid="uid://bf1l3v72wahjm"]
 
 [ext_resource type="Texture2D" uid="uid://cva1xdip6se40" path="res://Sprites/Parts/Moving_Parts/Linear_Actuator_1_Pin_End.png" id="1_6a7w3"]
 [ext_resource type="Script" path="res://Scripts/Part_Scripts/Moving_Parts/Linear_Actuator.gd" id="1_7ookr"]
 [ext_resource type="Texture2D" uid="uid://cdt4qfntbbuko" path="res://Sprites/Parts/Moving_Parts/Linear_Actuator_1_Base.png" id="1_dnvic"]
+[ext_resource type="Script" path="res://Scripts/Part_Scripts/pass_to_part_parent.gd" id="2_rlpmc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1grf6"]
 radius = 6.0
@@ -41,7 +42,9 @@ initial_offset = 1.0
 rotation = 1.5708
 collision_layer = 25
 collision_mask = 184
+input_pickable = true
 gravity_scale = 0.0
+script = ExtResource("2_rlpmc")
 
 [node name="Pin" type="Sprite2D" parent="Pin"]
 texture_filter = 1
@@ -68,8 +71,3 @@ shape = SubResource("CircleShape2D_h3v4a")
 [node name="Base_Rect" type="CollisionShape2D" parent="."]
 position = Vector2(45, 0)
 shape = SubResource("RectangleShape2D_clpos")
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered_base"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited_base"]
-[connection signal="mouse_entered" from="Pin" to="." method="_on_mouse_entered_pin"]
-[connection signal="mouse_exited" from="Pin" to="." method="_on_mouse_exited_pin"]
