@@ -9,7 +9,7 @@
 radius = 6.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_18mkv"]
-size = Vector2(4, 70)
+size = Vector2(70, 4)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_h3v4a"]
 radius = 12.0
@@ -39,7 +39,6 @@ length = 87.0
 initial_offset = 1.0
 
 [node name="Pin" type="RigidBody2D" parent="."]
-rotation = 1.5708
 collision_layer = 25
 collision_mask = 184
 input_pickable = true
@@ -48,15 +47,16 @@ script = ExtResource("2_rlpmc")
 
 [node name="Pin" type="Sprite2D" parent="Pin"]
 texture_filter = 1
-position = Vector2(0, -53)
+position = Vector2(53, 0)
+rotation = 1.5708
 texture = ExtResource("1_6a7w3")
 
 [node name="Pin_Circle" type="CollisionShape2D" parent="Pin"]
-position = Vector2(0, -87)
+position = Vector2(87, 0)
 shape = SubResource("CircleShape2D_1grf6")
 
 [node name="Pin_Rect" type="CollisionShape2D" parent="Pin"]
-position = Vector2(0, -47)
+position = Vector2(47, 0)
 shape = SubResource("RectangleShape2D_18mkv")
 
 [node name="Base" type="Sprite2D" parent="."]

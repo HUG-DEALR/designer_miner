@@ -1,6 +1,9 @@
-[gd_scene format=3 uid="uid://btip73a7xsi01"]
+[gd_scene load_steps=2 format=3 uid="uid://btip73a7xsi01"]
+
+[ext_resource type="Script" path="res://Scripts/Menus/joint_indicator.gd" id="1_6vogh"]
 
 [node name="JointIndicator" type="Node2D"]
+script = ExtResource("1_6vogh")
 
 [node name="Line2D2" type="Line2D" parent="."]
 points = PackedVector2Array(7, 0, 5, 5, 0, 7, -5, 5, -7, 0, -5, -5, 0, -7, 5, -5)
@@ -12,4 +15,4 @@ default_color = Color(0, 0, 0, 1)
 points = PackedVector2Array(7, 0, 5, 5, 0, 7, -5, 5, -7, 0, -5, -5, 0, -7, 5, -5)
 closed = true
 width = 3.0
-default_color = Color(1, 0, 0, 1)
+default_color = Color(0.5, 0.5, 0.5, 1)

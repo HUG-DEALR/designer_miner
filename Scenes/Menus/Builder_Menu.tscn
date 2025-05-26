@@ -256,5 +256,6 @@ mouse_filter = 1
 
 [connection signal="mouse_entered" from="CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer" to="." method="_on_build_plate_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer" to="." method="_on_build_plate_mouse_exited"]
+[connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer/Pin" to="." method="_on_create_pin_joint_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer/Recenter" to="." method="_on_recenter_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer/Clear" to="." method="_on_clear_pressed"]

@@ -14,3 +14,6 @@ func set_select_state(state: bool) -> Sprite2D:
 		return sprite
 	else:
 		return parent.set_select_state(state)
+
+func get_joint_positions() -> Array:
+	return parent.get_joint_positions()

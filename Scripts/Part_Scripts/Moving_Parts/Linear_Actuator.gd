@@ -29,7 +29,7 @@ func get_offset(join_number: int) -> Vector2:
 		1:
 			return Vector2.ZERO
 		2:
-			return Vector2(0,-87).rotated(pin_rigid_body.global_rotation)
+			return Vector2(87,0).rotated(pin_rigid_body.global_rotation)
 		_:
 			return Vector2.ZERO
 
@@ -41,6 +41,9 @@ func get_joint_physics_body(joint_number: int) -> PhysicsBody2D:
 			return pin_rigid_body
 		_:
 			return base_rigid_body
+
+func get_joint_positions() -> Array:
+	return [get_offset(1), get_offset(2)]
 
 func set_freeze(state: bool, pass_to_chilldren: bool = true) -> void:
 	freeze = state
