@@ -1,11 +1,15 @@
 extends Node
 
-func create_pin_joint(moving_node: PhysicsBody2D, parent_node: PhysicsBody2D, offset_m:= Vector2.ZERO, offset_p:= Vector2.ZERO, bias:= 1.0) -> void:
+func create_pin_joint(moving_node: PhysicsBody2D, parent_node: PhysicsBody2D, offset_m:= Vector2.ZERO, offset_p:= Vector2.ZERO, offset_is_local:= true, bias:= 1.0) -> void:
 	var new_joint: PinJoint2D = PinJoint2D.new()
 	var pre_pos: Vector2 = moving_node.global_position
 	parent_node.add_child(new_joint)
-	new_joint.global_position = parent_node.global_position + offset_p
-	moving_node.global_position = new_joint.global_position - offset_m
+	if offset_is_local:
+		new_joint.global_position = parent_node.global_position + offset_p
+		moving_node.global_position = new_joint.global_position - offset_m
+	else: # Assuming offset_p and offset_m are global coords
+		new_joint.global_position = offset_p
+		moving_node.global_position = new_joint.global_position - (moving_node.global_position - offset_m)
 	new_joint.node_a = new_joint.get_path_to(moving_node)
 	new_joint.node_b = new_joint.get_path_to(parent_node)
 	moving_node.global_position = pre_pos

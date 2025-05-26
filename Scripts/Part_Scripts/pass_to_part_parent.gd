@@ -17,3 +17,9 @@ func set_select_state(state: bool) -> Sprite2D:
 
 func get_joint_positions() -> Array:
 	return parent.get_joint_positions()
+
+func get_offset(joint_number: int) -> Vector2:
+	return parent.get_offset(joint_number)
+
+func get_joints() -> Array:
+	return parent.get_joints()

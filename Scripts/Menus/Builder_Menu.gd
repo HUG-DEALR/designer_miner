@@ -9,6 +9,7 @@ extends Node2D
 @onready var mouse_ray: RayCast2D = $CanvasLayer/Mouse_Ray
 @onready var left_click_selection_line: LineEdit = $CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer2/LineEdit
 @onready var right_click_selection_line: LineEdit = $CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer3/LineEdit
+@onready var freeze_button: Button = $CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer/Freeze
 
 const item_frame_path: String = "res://Scenes/Menus/item_frame.tscn"
 const parts_dict: Dictionary = {
@@ -29,8 +30,11 @@ const joint_indicator_path: String = "res://Scenes/Menus/joint_indicator.tscn"
 var active_indicators: Array = []
 var selected_joint_1: Node2D = null
 var selected_joint_1_joint_num: int = 0
+var joint_1_pos: Vector2 = Vector2.ZERO
 var selected_joint_2: Node2D = null
 var selected_joint_2_joint_num: int = 0
+var joint_2_pos: Vector2 = Vector2.ZERO
+var build_frozen: bool = true
 
 func _ready() -> void:
 	init_items()
@@ -42,6 +46,7 @@ func _process(_delta: float) -> void:
 	if mouse_carrying_a_part:
 		mouse_follower.position = get_viewport().get_mouse_position()
 		part_being_carried.position = Vector2.ZERO
+	print(get_viewport().get_mouse_position())
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
@@ -79,35 +84,55 @@ func _input(event: InputEvent) -> void:
 				highlight.texture = selected_sprite.texture
 				highlight.global_transform = selected_sprite.global_transform
 				
-				var joint_positions: Array = selected_body.get_joint_positions()
+			#	var joint_positions: Array = selected_body.get_joint_positions()
 				var nearest_joint: Node2D = null
 				var nearest_joint_distance: float = INF
-				var joint_num: int = 0
+			#	var joint_num: int = 0
+			#	
+			#	for pos in joint_positions:
+			#		var new_indicator: Node2D = load(joint_indicator_path).instantiate()
+			#		selected_body.add_child(new_indicator)
+			#		new_indicator.position = pos
+			#		new_indicator.z_index = 101
+			#		active_indicators.append(new_indicator)
+			#		
+			#		var indicator_distance: float = (get_viewport().get_mouse_position() - selected_body.to_global(pos)).length()
+			#		if indicator_distance < nearest_joint_distance:
+			#			nearest_joint = new_indicator
+			#			nearest_joint_distance = indicator_distance
+			#			joint_num = joint_positions.find(pos) + 1
+			#	if nearest_joint != null:
+			#		nearest_joint.set_type("selected")
 				
-				for pos in joint_positions:
+				var joints: Array = selected_body.get_joints()
+				for joint in joints:
+					var joint_pos: Vector2 = joint.global_position
 					var new_indicator: Node2D = load(joint_indicator_path).instantiate()
 					selected_body.add_child(new_indicator)
-					new_indicator.position = pos
+					new_indicator.global_position = joint_pos
 					new_indicator.z_index = 101
 					active_indicators.append(new_indicator)
 					
-					var indicator_distance: float = (get_viewport().get_mouse_position() - selected_body.to_global(pos)).length()
+					var indicator_distance: float = (get_viewport().get_mouse_position() - joint_pos).length()
 					if indicator_distance < nearest_joint_distance:
 						nearest_joint = new_indicator
 						nearest_joint_distance = indicator_distance
-						joint_num = joint_positions.find(pos) + 1
 				if nearest_joint != null:
 					nearest_joint.set_type("selected")
 				
 				match event.button_index:
 					MOUSE_BUTTON_LEFT:
-						left_click_selection_line.text = nearest_joint.name
+			#			left_click_selection_line.text = nearest_joint.name
 						selected_joint_1 = selected_body
-						selected_joint_1_joint_num = joint_num
+						joint_1_pos = nearest_joint.global_position
+						left_click_selection_line.text = str(joint_1_pos)
+			#			selected_joint_1_joint_num = joint_num
 					MOUSE_BUTTON_RIGHT:
-						right_click_selection_line.text = nearest_joint.name
+			#			right_click_selection_line.text = nearest_joint.name
 						selected_joint_2 = selected_body
-						selected_joint_2_joint_num = joint_num
+						joint_2_pos = nearest_joint.global_position
+						right_click_selection_line.text = str(joint_2_pos)
+			#			selected_joint_2_joint_num = joint_num
 			else:
 				if selected_body:
 					selected_body.set_select_state(false)
@@ -161,6 +186,11 @@ func set_freeze(node: RigidBody2D, state: bool) -> void:
 	else:
 		node.freeze = state
 
+func set_build_freeze(state: bool) -> void:
+	for node in build_plate_node.get_children():
+		if node.get_index() != 0:
+			set_freeze(node, state)
+
 func _on_build_plate_mouse_entered() -> void:
 	mouse_over_buildplate = true
 
@@ -175,12 +205,21 @@ func _on_clear_pressed() -> void:
 
 func _on_create_pin_joint_pressed() -> void:
 	if selected_joint_1 is RigidBody2D and selected_joint_2 is RigidBody2D:
-		Global.create_pin_joint(selected_joint_1, selected_joint_2, selected_joint_1.get_offset(selected_joint_1_joint_num), selected_joint_2.get_offset(selected_joint_2_joint_num))
-		if selected_joint_1.get_index() > selected_joint_2.get_index():
-			set_freeze(selected_joint_1, false)
-			await get_tree().create_timer(1.0).timeout
-			set_freeze(selected_joint_1, true)
-		else:
-			set_freeze(selected_joint_2, false)
-			await get_tree().create_timer(1.0).timeout
-			set_freeze(selected_joint_2, true)
+	#	Global.create_pin_joint(selected_joint_1, selected_joint_2, selected_joint_1.get_offset(selected_joint_1_joint_num), selected_joint_2.get_offset(selected_joint_2_joint_num))
+		Global.create_pin_joint(selected_joint_1, selected_joint_2, joint_1_pos, joint_2_pos, false)
+	#	if selected_joint_1.get_index() > selected_joint_2.get_index():
+	#		set_freeze(selected_joint_1, false)
+	#		await get_tree().create_timer(1.0).timeout
+	#		set_freeze(selected_joint_1, true)
+	#	else:
+	#		set_freeze(selected_joint_2, false)
+	#		await get_tree().create_timer(1.0).timeout
+	#		set_freeze(selected_joint_2, true)
+
+func _on_freeze_pressed() -> void:
+	build_frozen = !build_frozen
+	set_build_freeze(build_frozen)
+	if build_frozen:
+		freeze_button.text = "Unfreeze"
+	else:
+		freeze_button.text = "Freeze"

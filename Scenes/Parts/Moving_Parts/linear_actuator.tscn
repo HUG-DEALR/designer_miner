@@ -55,6 +55,8 @@ texture = ExtResource("1_6a7w3")
 position = Vector2(87, 0)
 shape = SubResource("CircleShape2D_1grf6")
 
+[node name="Marker2D" type="Marker2D" parent="Pin/Pin_Circle"]
+
 [node name="Pin_Rect" type="CollisionShape2D" parent="Pin"]
 position = Vector2(47, 0)
 shape = SubResource("RectangleShape2D_18mkv")
@@ -67,6 +69,8 @@ texture = ExtResource("1_dnvic")
 
 [node name="Base_Circle" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_h3v4a")
+
+[node name="Marker2D" type="Marker2D" parent="Base_Circle"]
 
 [node name="Base_Rect" type="CollisionShape2D" parent="."]
 position = Vector2(45, 0)

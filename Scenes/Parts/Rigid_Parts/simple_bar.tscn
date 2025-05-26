@@ -22,9 +22,13 @@ shape = SubResource("RectangleShape2D_pn0n4")
 position = Vector2(0, 56)
 shape = SubResource("CircleShape2D_m32iu")
 
+[node name="Marker2D" type="Marker2D" parent="CollisionShape2D2"]
+
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
 position = Vector2(0, -56)
 shape = SubResource("CircleShape2D_m32iu")
+
+[node name="Marker2D" type="Marker2D" parent="CollisionShape2D3"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1

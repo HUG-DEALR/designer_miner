@@ -8,6 +8,8 @@ extends RigidBody2D
 @onready var groove_2: GrooveJoint2D = $GrooveJoint2D2
 @onready var base_sprite: Sprite2D = $Base
 @onready var pin_sprite: Sprite2D = $Pin/Pin
+@onready var joint_1: Marker2D = $Base_Circle/Marker2D
+@onready var joint_2: Marker2D = $Pin/Pin_Circle/Marker2D
 
 var base_touching_mouse: bool = false
 var pin_touching_mouse: bool = false
@@ -24,8 +26,8 @@ func set_select_state(state: bool) -> Sprite2D:
 	else:
 		return base_sprite
 
-func get_offset(join_number: int) -> Vector2:
-	match  join_number:
+func get_offset(joint_number: int) -> Vector2:
+	match  joint_number:
 		1:
 			return Vector2.ZERO
 		2:
@@ -51,3 +53,6 @@ func set_freeze(state: bool, pass_to_chilldren: bool = true) -> void:
 		for child in Global.get_all_descendants(self):
 			if child is RigidBody2D:
 				child.freeze = state
+
+func get_joints() -> Array:
+	return [joint_1, joint_2]
