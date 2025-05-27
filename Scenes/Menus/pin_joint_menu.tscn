@@ -1,0 +1,133 @@
+[gd_scene load_steps=2 format=3 uid="uid://s2obsbf5jccc"]
+
+[ext_resource type="Script" path="res://Scripts/Menus/pin_joint_menu.gd" id="1_7mctd"]
+
+[node name="Pin_Joint_Menu" type="Node2D"]
+script = ExtResource("1_7mctd")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+focus_mode = 2
+mouse_filter = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 260.0
+offset_bottom = 141.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Close" type="Button" parent="Control/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 2
+text = "X"
+
+[node name="Drag" type="Button" parent="Control/PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(35, 35)
+layout_mode = 2
+size_flags_horizontal = 3
+action_mode = 0
+keep_pressed_outside = true
+text = "|||"
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Rotary Joint Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 5
+
+[node name="VBox" type="VBoxContainer" parent="Control/PanelContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/MarginContainer/VBox/HBoxContainer2"]
+custom_minimum_size = Vector2(65, 25)
+layout_mode = 2
+text = "Point 1:"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Control/PanelContainer/VBoxContainer/MarginContainer/VBox/HBoxContainer2"]
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 2
+placeholder_text = "Select with Left Click"
+alignment = 2
+editable = false
+expand_to_text_length = true
+context_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/MarginContainer/VBox/HBoxContainer3"]
+custom_minimum_size = Vector2(65, 25)
+layout_mode = 2
+text = "Point 2:"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Control/PanelContainer/VBoxContainer/MarginContainer/VBox/HBoxContainer3"]
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 2
+placeholder_text = "Select with Right Click"
+alignment = 2
+editable = false
+expand_to_text_length = true
+context_menu_enabled = false
+virtual_keyboard_enabled = false
+shortcut_keys_enabled = false
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="GridContainer" type="GridContainer" parent="Control/PanelContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 15
+columns = 3
+
+[node name="Apply" type="Button" parent="Control/PanelContainer/VBoxContainer/MarginContainer2/GridContainer"]
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 2
+disabled = true
+text = "Apply"
+
+[node name="Cancel" type="Button" parent="Control/PanelContainer/VBoxContainer/MarginContainer2/GridContainer"]
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 2
+text = "Cancel"
+
+[connection signal="pressed" from="Control/PanelContainer/VBoxContainer/HBoxContainer/Close" to="." method="_on_close_pressed"]
+[connection signal="button_down" from="Control/PanelContainer/VBoxContainer/HBoxContainer/Drag" to="." method="_on_drag_button_down"]
+[connection signal="button_up" from="Control/PanelContainer/VBoxContainer/HBoxContainer/Drag" to="." method="_on_drag_button_up"]
+[connection signal="pressed" from="Control/PanelContainer/VBoxContainer/MarginContainer2/GridContainer/Apply" to="." method="_on_apply_pressed"]
+[connection signal="pressed" from="Control/PanelContainer/VBoxContainer/MarginContainer2/GridContainer/Cancel" to="." method="_on_cancel_pressed"]

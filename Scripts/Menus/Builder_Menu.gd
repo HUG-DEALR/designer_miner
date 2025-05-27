@@ -11,6 +11,13 @@ extends Node2D
 @onready var right_click_selection_line: LineEdit = $CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer3/LineEdit
 @onready var freeze_button: Button = $CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer/Freeze
 
+@onready var file_dropdown: MenuButton = $CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer/File
+@onready var settings_dropdown: MenuButton = $CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer/Settings
+@onready var plate_actions_dropdown: MenuButton = $CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer/Plate_Actions
+@onready var create_joint_dropdown: MenuButton = $CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer/Create_Joint
+
+@onready var pin_joint_menu: Node2D = $CanvasLayer/Pin_Joint_Menu
+
 const item_frame_path: String = "res://Scenes/Menus/item_frame.tscn"
 const parts_dict: Dictionary = {
 	"Linear Actuator": "res://Scenes/Parts/Moving_Parts/linear_actuator.tscn",
@@ -41,6 +48,10 @@ func _ready() -> void:
 	build_plate_node.position = build_panel.size/2
 	await get_tree().process_frame
 	center_build_plate()
+	file_dropdown.get_popup().connect("id_pressed", Callable(self, "_on_file_subbutton_pressed"))
+	settings_dropdown.get_popup().connect("id_pressed", Callable(self, "_on_settings_subbutton_pressed"))
+	plate_actions_dropdown.get_popup().connect("id_pressed", Callable(self, "_on_plate_actions_subbutton_pressed"))
+	create_joint_dropdown.get_popup().connect("id_pressed", Callable(self, "_on_create_joint_dropdown_subbutton_pressed"))
 
 func _process(_delta: float) -> void:
 	if mouse_carrying_a_part:
@@ -178,6 +189,7 @@ func clear_build_plate() -> void:
 	selected_joint_2 = null
 	selected_joint_1_joint_num = 0
 	selected_joint_2_joint_num = 0
+	Global.build_plate_cleared()
 
 func set_freeze(node: RigidBody2D, state: bool) -> void:
 	if node.is_in_group("multibody_part"):
@@ -222,3 +234,42 @@ func _on_freeze_pressed() -> void:
 		freeze_button.text = "Unfreeze"
 	else:
 		freeze_button.text = "Freeze"
+
+func _on_exit_pressed() -> void:
+	get_tree().quit()
+
+func _on_file_subbutton_pressed(id: int) -> void: #Manually Connected
+	var sub_button_chosen: String = file_dropdown.get_popup().get_item_text(id)
+	match sub_button_chosen:
+		"Save":
+			pass
+		"Load":
+			pass
+		"Clear":
+			clear_build_plate()
+
+func _on_settings_subbutton_pressed(id: int) -> void: #Manually Connected
+	var sub_button_chosen: String = settings_dropdown.get_popup().get_item_text(id)
+	match sub_button_chosen:
+		"WIP":
+			pass
+
+func _on_plate_actions_subbutton_pressed(id: int) -> void: #Manually Connected
+	var sub_button_chosen: String = plate_actions_dropdown.get_popup().get_item_text(id)
+	match sub_button_chosen:
+		"Recenter Build Plate":
+			center_build_plate()
+		"Freeze All Parts":
+			set_build_freeze(true)
+		"Unfreeze All Parts":
+			set_build_freeze(false)
+
+func _on_create_joint_dropdown_subbutton_pressed(id: int) -> void: #Manually Connected
+	var sub_button_chosen: String = create_joint_dropdown.get_popup().get_item_text(id)
+	match sub_button_chosen:
+		"Rotary Joint":
+			pin_joint_menu.set_visible_status(true)
+		"Slider Joint":
+			pin_joint_menu.set_visible_status(false)
+		"Spring Joint":
+			pin_joint_menu.set_visible_status(false)

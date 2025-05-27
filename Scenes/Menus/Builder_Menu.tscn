@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://7ayxeo2kacem"]
+[gd_scene load_steps=6 format=3 uid="uid://7ayxeo2kacem"]
 
 [ext_resource type="Script" path="res://Scripts/Menus/Builder_Menu.gd" id="1_71iis"]
+[ext_resource type="PackedScene" uid="uid://s2obsbf5jccc" path="res://Scenes/Menus/pin_joint_menu.tscn" id="2_egxm0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrsfb"]
 bg_color = Color(1, 1, 1, 0.0980392)
@@ -59,7 +60,7 @@ theme_override_constants/minimum_grab_thickness = 15
 split_offset = 10000
 
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/HBoxContainer"]
-custom_minimum_size = Vector2(600, 600)
+custom_minimum_size = Vector2(800, 600)
 layout_mode = 2
 follow_focus = true
 
@@ -259,9 +260,112 @@ size_flags_vertical = 4
 focus_mode = 2
 mouse_filter = 1
 
+[node name="Top_Bar" type="Control" parent="CanvasLayer"]
+custom_minimum_size = Vector2(800, 40)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+focus_mode = 2
+mouse_filter = 1
+
+[node name="HSplitContainer" type="HSplitContainer" parent="CanvasLayer/Top_Bar"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = 35.0
+offset_bottom = 40.0
+grow_horizontal = 2
+focus_mode = 1
+theme_override_constants/separation = 15
+theme_override_constants/minimum_grab_thickness = 15
+split_offset = 450
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Top_Bar/HSplitContainer"]
+custom_minimum_size = Vector2(50, 40)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Exit" type="Button" parent="CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "Exit"
+
+[node name="File" type="MenuButton" parent="CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 4
+text = "File"
+switch_on_hover = true
+item_count = 3
+popup/item_0/text = "Save"
+popup/item_1/text = "Load"
+popup/item_1/id = 1
+popup/item_2/text = "Clear"
+popup/item_2/id = 2
+
+[node name="Settings" type="MenuButton" parent="CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Settings"
+switch_on_hover = true
+item_count = 1
+popup/item_0/text = "WIP"
+popup/item_0/id = 1
+popup/item_0/disabled = true
+
+[node name="Plate_Actions" type="MenuButton" parent="CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Build Plate Actions"
+switch_on_hover = true
+item_count = 3
+popup/item_0/text = "Recenter Build Plate"
+popup/item_1/text = "Freeze All Parts"
+popup/item_1/id = 1
+popup/item_2/text = "Unfreeze All Parts"
+popup/item_2/id = 2
+
+[node name="Create_Joint" type="MenuButton" parent="CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 4
+text = "Creat Joint"
+switch_on_hover = true
+item_count = 3
+popup/item_0/text = "Rotary Joint"
+popup/item_1/text = "Slider Joint"
+popup/item_1/id = 1
+popup/item_1/disabled = true
+popup/item_2/text = "Spring Joint"
+popup/item_2/id = 2
+popup/item_2/disabled = true
+
+[node name="PlaceHolder" type="Control" parent="CanvasLayer/Top_Bar/HSplitContainer"]
+custom_minimum_size = Vector2(10, 40)
+layout_mode = 2
+
+[node name="Pin_Joint_Menu" parent="CanvasLayer" instance=ExtResource("2_egxm0")]
+visible = false
+position = Vector2(20, 55)
+
 [connection signal="mouse_entered" from="CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer" to="." method="_on_build_plate_mouse_entered"]
 [connection signal="mouse_exited" from="CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer" to="." method="_on_build_plate_mouse_exited"]
 [connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer/Pin" to="." method="_on_create_pin_joint_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer/Recenter" to="." method="_on_recenter_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer/Clear" to="." method="_on_clear_pressed"]
 [connection signal="pressed" from="CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer/Freeze" to="." method="_on_freeze_pressed"]
+[connection signal="pressed" from="CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer/Exit" to="." method="_on_exit_pressed"]
