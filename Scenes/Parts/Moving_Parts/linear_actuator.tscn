@@ -27,7 +27,7 @@ script = ExtResource("1_7ookr")
 rotation = 4.71239
 node_a = NodePath("..")
 node_b = NodePath("../Pin")
-length = 87.0
+length = 60.0
 initial_offset = 1.0
 
 [node name="GrooveJoint2D2" type="GrooveJoint2D" parent="."]
@@ -35,7 +35,7 @@ position = Vector2(87, 0)
 rotation = 4.71239
 node_a = NodePath("..")
 node_b = NodePath("../Pin")
-length = 87.0
+length = 60.0
 initial_offset = 1.0
 
 [node name="Pin" type="RigidBody2D" parent="."]

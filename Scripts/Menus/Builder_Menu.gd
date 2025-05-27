@@ -46,7 +46,6 @@ func _process(_delta: float) -> void:
 	if mouse_carrying_a_part:
 		mouse_follower.position = get_viewport().get_mouse_position()
 		part_being_carried.position = Vector2.ZERO
-	print(get_viewport().get_mouse_position())
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
