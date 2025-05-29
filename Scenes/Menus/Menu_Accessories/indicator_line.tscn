@@ -6,6 +6,6 @@
 script = ExtResource("1_xseha")
 
 [node name="Line2D" type="Line2D" parent="."]
-points = PackedVector2Array(0, 0, 1, 1)
+points = PackedVector2Array(0, 0, 10, 10)
 width = 3.0
-default_color = Color(0, 0, 1, 1)
+default_color = Color(0, 0, 1, 0.5)

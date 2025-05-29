@@ -1,10 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://7ayxeo2kacem"]
+[gd_scene load_steps=7 format=3 uid="uid://7ayxeo2kacem"]
 
 [ext_resource type="Script" path="res://Scripts/Menus/Builder_Menu.gd" id="1_71iis"]
 [ext_resource type="PackedScene" uid="uid://s2obsbf5jccc" path="res://Scenes/Menus/pin_joint_menu.tscn" id="2_egxm0"]
+[ext_resource type="Texture2D" uid="uid://cfubdupttgqtt" path="res://Images/Textures/Noise/T_VFX_Noi55.png" id="2_ljgvb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrsfb"]
-bg_color = Color(1, 1, 1, 0.0980392)
+bg_color = Color(0.0980392, 0.215686, 1, 0.0431373)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.188235, 0.188235, 0.188235, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b136e"]
 content_margin_left = 15.0
@@ -62,14 +68,26 @@ split_offset = 10000
 [node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(800, 600)
 layout_mode = 2
+mouse_filter = 2
 follow_focus = true
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HBoxContainer/ScrollContainer"]
 custom_minimum_size = Vector2(2500, 2500)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_rrsfb")
 
 [node name="Build_Plate" type="Node2D" parent="CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer"]
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/Control/HBoxContainer/ScrollContainer/PanelContainer"]
+modulate = Color(1, 1, 1, 0.05)
+layout_mode = 2
+texture = ExtResource("2_ljgvb")
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/HBoxContainer"]
 custom_minimum_size = Vector2(100, 100)
@@ -200,12 +218,21 @@ layout_mode = 2
 size_flags_vertical = 4
 text = "Build Plate Actions"
 switch_on_hover = true
-item_count = 3
+item_count = 6
 popup/item_0/text = "Recenter Build Plate"
-popup/item_1/text = "Freeze All Parts"
+popup/item_1/text = "Default Zoom"
 popup/item_1/id = 1
-popup/item_2/text = "Unfreeze All Parts"
+popup/item_1/disabled = true
+popup/item_2/text = "Zoom In"
 popup/item_2/id = 2
+popup/item_2/disabled = true
+popup/item_3/text = "Zoom Out"
+popup/item_3/id = 3
+popup/item_3/disabled = true
+popup/item_4/text = "Freeze All Parts"
+popup/item_4/id = 4
+popup/item_5/text = "Unfreeze All Parts"
+popup/item_5/id = 5
 
 [node name="Create_Joint" type="MenuButton" parent="CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer"]
 custom_minimum_size = Vector2(40, 40)

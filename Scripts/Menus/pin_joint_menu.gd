@@ -90,7 +90,11 @@ func _on_drag_button_up() -> void:
 
 func _on_apply_pressed() -> void:
 	if marker_1 != null and marker_2 != null:
-		Global.create_pin_joint_from_markers(marker_1,marker_2)
+		if Global.create_pin_joint_from_markers(marker_1,marker_2):
+			var new_line = load(indicator_line_path).instantiate()
+			new_line.set_end_point_nodes(marker_1,marker_2)
+			new_line.set_type("joint_connection")
+			new_line.auto_self_delete(5.0)
 		reset_menu()
 
 func _on_cancel_pressed() -> void:

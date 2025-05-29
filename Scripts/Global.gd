@@ -4,9 +4,9 @@ var pin_joints: Array = [] # Fromat: [[Joint, [Node_A, Node_B]],[...
 var groove_joints: Array = [] # Fromat: [[Joint, [Node_A, Node_B]],[...
 var spring_joints: Array = [] # Fromat: [[Joint, [Node_A, Node_B]],[...
 
-func create_pin_joint(moving_node: PhysicsBody2D, parent_node: PhysicsBody2D, offset_m:= Vector2.ZERO, offset_p:= Vector2.ZERO, offset_is_local:= true, bias:= 1.0) -> void:
+func create_pin_joint(moving_node: PhysicsBody2D, parent_node: PhysicsBody2D, offset_m:= Vector2.ZERO, offset_p:= Vector2.ZERO, offset_is_local:= true, bias:= 1.0) -> bool:
 	if not is_joint_valid("PinJoint2D", moving_node, parent_node):
-		return
+		return false
 	var new_joint: PinJoint2D = PinJoint2D.new()
 	var pre_pos: Vector2 = moving_node.global_position
 	parent_node.add_child(new_joint)
@@ -20,10 +20,11 @@ func create_pin_joint(moving_node: PhysicsBody2D, parent_node: PhysicsBody2D, of
 	moving_node.global_position = pre_pos
 	new_joint.bias = bias
 	pin_joints.append([new_joint,[moving_node,parent_node]])
+	return true
 
-func create_groove_joint(moving_node: PhysicsBody2D, parent_node: PhysicsBody2D, length: float , direction: Vector2 ,offset_m:= Vector2.ZERO, offset_p:= Vector2.ZERO, bias:= 1.0) -> void:
+func create_groove_joint(moving_node: PhysicsBody2D, parent_node: PhysicsBody2D, length: float , direction: Vector2 ,offset_m:= Vector2.ZERO, offset_p:= Vector2.ZERO, bias:= 1.0) -> bool:
 	if not is_joint_valid("GrooveJoint2D", moving_node, parent_node):
-		return
+		return false
 	var new_joint: GrooveJoint2D = GrooveJoint2D.new()
 	var pre_pos: Vector2 = moving_node.global_position
 	parent_node.add_child(new_joint)
@@ -36,15 +37,17 @@ func create_groove_joint(moving_node: PhysicsBody2D, parent_node: PhysicsBody2D,
 	new_joint.initial_offset = (parent_node.global_position - moving_node.global_position).project(direction).length()
 	moving_node.global_position = pre_pos
 	new_joint.bias = bias
+	return true
 	# Untested but works in theory
 
-func create_pin_joint_from_markers(marker1: Marker2D, marker2: Marker2D, bias:= 1.0) -> void:
+func create_pin_joint_from_markers(marker1: Marker2D, marker2: Marker2D, bias:= 1.0) -> bool:
 	var rigid_body_1: RigidBody2D = get_predecessor_by_type(marker1, "RigidBody2D")
 	var rigid_body_2: RigidBody2D = get_predecessor_by_type(marker2, "RigidBody2D")
 	if rigid_body_1 and rigid_body_2:
-		create_pin_joint(rigid_body_1,rigid_body_2,marker1.global_position,marker2.global_position,false,bias)
+		return create_pin_joint(rigid_body_1,rigid_body_2,marker1.global_position,marker2.global_position,false,bias)
 	else:
 		print("Failed to find RigidBody parents of Markers")
+		return false
 
 func build_plate_cleared() -> void:
 	pin_joints.clear()

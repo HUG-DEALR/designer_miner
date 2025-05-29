@@ -35,12 +35,19 @@ var selected_body: PhysicsBody2D = null
 const joint_indicator_path: String = "res://Scenes/Menus/Menu_Accessories/joint_indicator.tscn"
 var active_indicators: Array = []
 var build_frozen: bool = true
+var build_scale: float = 1.0
+var default_panel_size: Vector2i = Vector2i.ZERO
+var dragging_build_plate: bool = false
+var mouse_movement: Vector2 = Vector2.ZERO
+var _last_mouse_position: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	init_items()
 	build_plate_node.position = build_panel.size/2
 	await get_tree().process_frame
 	center_build_plate()
+	default_panel_size = build_panel.size
+	_last_mouse_position = get_viewport().get_mouse_position()
 	file_dropdown.get_popup().connect("id_pressed", Callable(self, "_on_file_subbutton_pressed"))
 	settings_dropdown.get_popup().connect("id_pressed", Callable(self, "_on_settings_subbutton_pressed"))
 	plate_actions_dropdown.get_popup().connect("id_pressed", Callable(self, "_on_plate_actions_subbutton_pressed"))
@@ -51,6 +58,13 @@ func _process(_delta: float) -> void:
 	if mouse_carrying_a_part:
 		mouse_follower.position = get_viewport().get_mouse_position()
 		part_being_carried.position = Vector2.ZERO
+	
+	var current_mouse_position = get_viewport().get_mouse_position()
+	mouse_movement = current_mouse_position - _last_mouse_position
+	_last_mouse_position = current_mouse_position
+	if dragging_build_plate:
+		build_scroll_container.scroll_horizontal += int(-mouse_movement.x)
+		build_scroll_container.scroll_vertical += int(-mouse_movement.y)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
@@ -120,6 +134,16 @@ func _input(event: InputEvent) -> void:
 					selected_body.set_select_state(false)
 					selected_body = null
 					highlight.texture = null
+				
+				if mouse_over_buildplate and not dragging_build_plate:
+					dragging_build_plate = true
+	elif event is InputEventMouseButton and not event.pressed:
+		dragging_build_plate = false
+#	if event is InputEventMouseMotion:
+#		mouse_movement = event.relative
+#	else:
+#		print("movement is 0")
+#		mouse_movement = Vector2.ZERO
 
 func set_carrying_state(state: bool) -> void:
 	mouse_carrying_a_part = state
@@ -178,6 +202,12 @@ func set_build_freeze(state: bool) -> void:
 func get_build_freeze_state() -> bool:
 	return build_frozen
 
+func set_build_scale(target_scale: float = 1.0) -> void:
+	build_scale = clamp(target_scale,0.01,20.0)
+	build_plate_node.scale = Vector2.ONE * build_scale
+	build_panel.custom_minimum_size = default_panel_size * build_scale
+	# WIP
+
 func _on_build_plate_mouse_entered() -> void:
 	mouse_over_buildplate = true
 
@@ -208,6 +238,15 @@ func _on_plate_actions_subbutton_pressed(id: int) -> void: #Manually Connected
 	match sub_button_chosen:
 		"Recenter Build Plate":
 			center_build_plate()
+		"Default Zoom":
+			set_build_scale(1.0)
+			pass
+		"Zoom In":
+			set_build_scale(build_scale * 1.5)
+			pass
+		"Zoom Out":
+			set_build_scale(build_scale * 0.5)
+			pass
 		"Freeze All Parts":
 			set_build_freeze(true)
 		"Unfreeze All Parts":
