@@ -7,18 +7,17 @@ extends Node2D
 @onready var build_scroll_container: ScrollContainer = $CanvasLayer/Control/HBoxContainer/ScrollContainer
 @onready var highlight: Sprite2D = $CanvasLayer/Highlighter
 @onready var mouse_ray: RayCast2D = $CanvasLayer/Mouse_Ray
-@onready var left_click_selection_line: LineEdit = $CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer2/LineEdit
-@onready var right_click_selection_line: LineEdit = $CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/TabContainer/Join/VBox/HBoxContainer3/LineEdit
-@onready var freeze_button: Button = $CanvasLayer/Control/HBoxContainer/PanelContainer/VBoxContainer/GridContainer/Freeze
-
 @onready var file_dropdown: MenuButton = $CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer/File
 @onready var settings_dropdown: MenuButton = $CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer/Settings
 @onready var plate_actions_dropdown: MenuButton = $CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer/Plate_Actions
 @onready var create_joint_dropdown: MenuButton = $CanvasLayer/Top_Bar/HSplitContainer/ScrollContainer/PanelContainer/HBoxContainer/Create_Joint
 
+# Submenus and corresponding variabls
 @onready var pin_joint_menu: Node2D = $CanvasLayer/Pin_Joint_Menu
+var pin_joint_submenu_active: bool = false
 
-const item_frame_path: String = "res://Scenes/Menus/item_frame.tscn"
+# Item variables
+const item_frame_path: String = "res://Scenes/Menus/Menu_Accessories/item_frame.tscn"
 const parts_dict: Dictionary = {
 	"Linear Actuator": "res://Scenes/Parts/Moving_Parts/linear_actuator.tscn",
 	"Simple Bar": "res://Scenes/Parts/Rigid_Parts/simple_bar.tscn"
@@ -33,14 +32,8 @@ var mouse_over_buildplate: bool = false
 var part_being_carried: Node2D = null
 var item_frames: Dictionary = {}
 var selected_body: PhysicsBody2D = null
-const joint_indicator_path: String = "res://Scenes/Menus/joint_indicator.tscn"
+const joint_indicator_path: String = "res://Scenes/Menus/Menu_Accessories/joint_indicator.tscn"
 var active_indicators: Array = []
-var selected_joint_1: Node2D = null
-var selected_joint_1_joint_num: int = 0
-var joint_1_pos: Vector2 = Vector2.ZERO
-var selected_joint_2: Node2D = null
-var selected_joint_2_joint_num: int = 0
-var joint_2_pos: Vector2 = Vector2.ZERO
 var build_frozen: bool = true
 
 func _ready() -> void:
@@ -52,6 +45,7 @@ func _ready() -> void:
 	settings_dropdown.get_popup().connect("id_pressed", Callable(self, "_on_settings_subbutton_pressed"))
 	plate_actions_dropdown.get_popup().connect("id_pressed", Callable(self, "_on_plate_actions_subbutton_pressed"))
 	create_joint_dropdown.get_popup().connect("id_pressed", Callable(self, "_on_create_joint_dropdown_subbutton_pressed"))
+	pin_joint_menu.set_host(self)
 
 func _process(_delta: float) -> void:
 	if mouse_carrying_a_part:
@@ -94,26 +88,9 @@ func _input(event: InputEvent) -> void:
 				highlight.texture = selected_sprite.texture
 				highlight.global_transform = selected_sprite.global_transform
 				
-			#	var joint_positions: Array = selected_body.get_joint_positions()
 				var nearest_joint: Node2D = null
 				var nearest_joint_distance: float = INF
-			#	var joint_num: int = 0
-			#	
-			#	for pos in joint_positions:
-			#		var new_indicator: Node2D = load(joint_indicator_path).instantiate()
-			#		selected_body.add_child(new_indicator)
-			#		new_indicator.position = pos
-			#		new_indicator.z_index = 101
-			#		active_indicators.append(new_indicator)
-			#		
-			#		var indicator_distance: float = (get_viewport().get_mouse_position() - selected_body.to_global(pos)).length()
-			#		if indicator_distance < nearest_joint_distance:
-			#			nearest_joint = new_indicator
-			#			nearest_joint_distance = indicator_distance
-			#			joint_num = joint_positions.find(pos) + 1
-			#	if nearest_joint != null:
-			#		nearest_joint.set_type("selected")
-				
+				var selected_marker: Marker2D = null
 				var joints: Array = selected_body.get_joints()
 				for joint in joints:
 					var joint_pos: Vector2 = joint.global_position
@@ -127,22 +104,17 @@ func _input(event: InputEvent) -> void:
 					if indicator_distance < nearest_joint_distance:
 						nearest_joint = new_indicator
 						nearest_joint_distance = indicator_distance
+						selected_marker = joint
 				if nearest_joint != null:
 					nearest_joint.set_type("selected")
 				
 				match event.button_index:
 					MOUSE_BUTTON_LEFT:
-			#			left_click_selection_line.text = nearest_joint.name
-						selected_joint_1 = selected_body
-						joint_1_pos = nearest_joint.global_position
-						left_click_selection_line.text = str(joint_1_pos)
-			#			selected_joint_1_joint_num = joint_num
+						if pin_joint_submenu_active and selected_marker:
+							pin_joint_menu.set_target_marker(1,selected_marker)
 					MOUSE_BUTTON_RIGHT:
-			#			right_click_selection_line.text = nearest_joint.name
-						selected_joint_2 = selected_body
-						joint_2_pos = nearest_joint.global_position
-						right_click_selection_line.text = str(joint_2_pos)
-			#			selected_joint_2_joint_num = joint_num
+						if pin_joint_submenu_active and selected_marker:
+							pin_joint_menu.set_target_marker(2,selected_marker)
 			else:
 				if selected_body:
 					selected_body.set_select_state(false)
@@ -177,19 +149,19 @@ func center_build_plate() -> void:
 func clear_build_plate() -> void:
 	for node in build_plate_node.get_children():
 		node.queue_free()
-	left_click_selection_line.text = ""
-	right_click_selection_line.text = ""
 	selected_body = null
 	highlight.texture = null
 	for node in active_indicators:
 		if node:
 			node.queue_free()
 	active_indicators.clear()
-	selected_joint_1 = null
-	selected_joint_2 = null
-	selected_joint_1_joint_num = 0
-	selected_joint_2_joint_num = 0
+	pin_joint_menu.reset_menu()
 	Global.build_plate_cleared()
+
+func set_submenu_active_state(submenu: String, state: bool) -> void:
+	match submenu:
+		"pin_joint":
+			pin_joint_submenu_active = state
 
 func set_freeze(node: RigidBody2D, state: bool) -> void:
 	if node.is_in_group("multibody_part"):
@@ -198,42 +170,19 @@ func set_freeze(node: RigidBody2D, state: bool) -> void:
 		node.freeze = state
 
 func set_build_freeze(state: bool) -> void:
+	build_frozen = state
 	for node in build_plate_node.get_children():
 		if node.get_index() != 0:
 			set_freeze(node, state)
+
+func get_build_freeze_state() -> bool:
+	return build_frozen
 
 func _on_build_plate_mouse_entered() -> void:
 	mouse_over_buildplate = true
 
 func _on_build_plate_mouse_exited() -> void:
 	mouse_over_buildplate = false
-
-func _on_recenter_pressed() -> void:
-	center_build_plate()
-
-func _on_clear_pressed() -> void:
-	clear_build_plate()
-
-func _on_create_pin_joint_pressed() -> void:
-	if selected_joint_1 is RigidBody2D and selected_joint_2 is RigidBody2D:
-	#	Global.create_pin_joint(selected_joint_1, selected_joint_2, selected_joint_1.get_offset(selected_joint_1_joint_num), selected_joint_2.get_offset(selected_joint_2_joint_num))
-		Global.create_pin_joint(selected_joint_1, selected_joint_2, joint_1_pos, joint_2_pos, false)
-	#	if selected_joint_1.get_index() > selected_joint_2.get_index():
-	#		set_freeze(selected_joint_1, false)
-	#		await get_tree().create_timer(1.0).timeout
-	#		set_freeze(selected_joint_1, true)
-	#	else:
-	#		set_freeze(selected_joint_2, false)
-	#		await get_tree().create_timer(1.0).timeout
-	#		set_freeze(selected_joint_2, true)
-
-func _on_freeze_pressed() -> void:
-	build_frozen = !build_frozen
-	set_build_freeze(build_frozen)
-	if build_frozen:
-		freeze_button.text = "Unfreeze"
-	else:
-		freeze_button.text = "Freeze"
 
 func _on_exit_pressed() -> void:
 	get_tree().quit()

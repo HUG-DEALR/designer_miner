@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://chot60kdu13pm"]
 
 [ext_resource type="StyleBox" uid="uid://ctvr5y3gokvwv" path="res://Resources/Control_Nodes/Item_Frame_StyleBox.tres" id="1_kk50v"]
-[ext_resource type="Script" path="res://Scripts/Menus/Item_Frame.gd" id="2_tk5gr"]
+[ext_resource type="Script" path="res://Scripts/Menus/Menu_Accessories/Item_Frame.gd" id="2_tk5gr"]
 [ext_resource type="Texture2D" uid="uid://cdt4qfntbbuko" path="res://Sprites/Parts/Moving_Parts/Linear_Actuator_1_Base.png" id="3_0gdxt"]
 
 [sub_resource type="Gradient" id="Gradient_411hi"]

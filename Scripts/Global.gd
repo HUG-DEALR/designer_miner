@@ -39,8 +39,8 @@ func create_groove_joint(moving_node: PhysicsBody2D, parent_node: PhysicsBody2D,
 	# Untested but works in theory
 
 func create_pin_joint_from_markers(marker1: Marker2D, marker2: Marker2D, bias:= 1.0) -> void:
-	var rigid_body_1: RigidBody2D = get_predecessor_by_type(marker1, RigidBody2D)
-	var rigid_body_2: RigidBody2D = get_predecessor_by_type(marker2, RigidBody2D)
+	var rigid_body_1: RigidBody2D = get_predecessor_by_type(marker1, "RigidBody2D")
+	var rigid_body_2: RigidBody2D = get_predecessor_by_type(marker2, "RigidBody2D")
 	if rigid_body_1 and rigid_body_2:
 		create_pin_joint(rigid_body_1,rigid_body_2,marker1.global_position,marker2.global_position,false,bias)
 	else:
@@ -52,6 +52,9 @@ func build_plate_cleared() -> void:
 	spring_joints.clear()
 
 func is_joint_valid(joint_type: String, node_a: RigidBody2D, node_b: RigidBody2D) -> bool:
+	if (not node_a is RigidBody2D) or (not node_b is RigidBody2D):
+		print("invalid joint, constituent part(s) not RigidBody2D")
+		return false
 	if node_a == node_b:
 		print("invalid joint; cannot join ", node_a, " to itself")
 		return false
@@ -97,7 +100,7 @@ func _has_at_specific_depth(arr: Array, value, target_depth: int, current_depth:
 					return true
 	return false
 
-func get_predecessor_by_type(starting_node: Node, type) -> Node:
+func get_predecessor_by_type(starting_node: Node, type: String) -> Node:
 	var target_predecessor: Node = starting_node.get_parent()
 	while not target_predecessor.get_class() == type:
 		if target_predecessor.get_parent():

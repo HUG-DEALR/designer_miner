@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://yfeft7hl3g51"]
+
+[ext_resource type="Script" path="res://Scripts/Menus/Menu_Accessories/indicator_line.gd" id="1_xseha"]
+
+[node name="IndicatorLine" type="Node2D"]
+script = ExtResource("1_xseha")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 1, 1)
+width = 3.0
+default_color = Color(0, 0, 1, 1)
